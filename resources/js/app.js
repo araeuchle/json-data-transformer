@@ -19,7 +19,20 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('converter', require('./components/Converter.vue').default);
+Vue.component('viewer', require('./screens/Viewer.vue').default);
+Vue.component('item', require('./components/Item.vue').default);
+Vue.component('snapshot', require('./components/Snapshot.vue').default);
+Vue.component('bottomNavigation', require('./components/BottomNavigation.vue').default);
+Vue.component('parseScreen', require('./screens/ParseScreen.vue').default);
+Vue.component('dataScreen', require('./screens/DataScreen.vue').default);
+
+
+import Sticky from 'vue-sticky-directive';
+Vue.use(Sticky);
+
+import Zondicon from 'vue-zondicons';
+
+Vue.component('Zondicon', Zondicon);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
