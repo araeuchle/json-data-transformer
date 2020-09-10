@@ -5,6 +5,7 @@ You have options to edit the data inside the JSON and also delete items
 in that structure. 
 
 Import format: JSON
+
 Export formats: JSON, CSV
 
 ## Technical Details
