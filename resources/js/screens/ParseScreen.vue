@@ -1,6 +1,6 @@
 <template>
     <div class="row " v-if="parseMode">
-        <div class="col-md-12">
+        <div class="col-sm-4 offset-sm-4">
             <textarea class="form-control" rows="10" v-model="items"></textarea>
             <button class="btn btn-primary mt-2" @click="parse">Parse</button>
         </div>
@@ -23,9 +23,11 @@ export default {
                 return;
             }
 
-            this.items = JSON.parse(this.items);
-            this.parseMode = false;
-            this.currentItem = this.items[this.currentIndex];
+            let parsedItems = JSON.parse(this.items);
+
+            this.$store.dispatch('setItems', parsedItems);
+            this.$store.dispatch('setCurrentItem', parsedItems[0]);
+            this.$store.dispatch('setViewMode', 'data');
         },
     }
 }

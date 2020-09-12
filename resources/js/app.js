@@ -20,18 +20,19 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('viewer', require('./screens/Viewer.vue').default);
-Vue.component('item', require('./components/Item.vue').default);
-Vue.component('snapshot', require('./components/Snapshot.vue').default);
 Vue.component('bottomNavigation', require('./components/BottomNavigation.vue').default);
 Vue.component('parseScreen', require('./screens/ParseScreen.vue').default);
 Vue.component('dataScreen', require('./screens/DataScreen.vue').default);
+Vue.component('exportScreen', require('./screens/ExportScreen.vue').default);
+Vue.component('configScreen', require('./screens/ConfigScreen.vue').default);
+Vue.component('snapshotScreen', require('./screens/SnapshotScreen.vue').default);
+
 
 
 import Sticky from 'vue-sticky-directive';
 Vue.use(Sticky);
 
 import Zondicon from 'vue-zondicons';
-
 Vue.component('Zondicon', Zondicon);
 
 /**
@@ -40,6 +41,9 @@ Vue.component('Zondicon', Zondicon);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+import store from './store/store';
+
 const app = new Vue({
+    store,
     el: '#app',
 });

@@ -24,7 +24,9 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@deveodk/vue-toastr": "^1.1.0",
         "vue-sticky-directive": "0.0.10",
-        "vue-zondicons": "^0.1.10"
+        "vue-zondicons": "^0.1.10",
+        "vuex": "^3.5.1"
     }
 }

@@ -26,8 +26,7 @@ class SnapshotRequest extends FormRequest
         return [
             'currentItem' => 'required',
             'currentIndex' => 'required',
-            'convertedItems' => 'required',
-            'items' => 'required'
+            'items' => 'present|array'
         ];
     }
 }
