@@ -43,6 +43,10 @@ Vue.component('Zondicon', Zondicon);
 
 import store from './store/store';
 
+window.onbeforeunload = function() {
+    return 'You have unsaved changes!';
+}
+
 const app = new Vue({
     store,
     el: '#app',

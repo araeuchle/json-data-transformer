@@ -12,3 +12,7 @@ Route::group(['prefix' => 'snapshots'], function() {
     Route::delete('/', 'SnapshotController@deleteAll');
 });
 
+Route::group(['prefix' => 'export'],  function() {
+    Route::post('/', 'ExportController@index');
+});
+

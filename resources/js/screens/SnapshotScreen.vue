@@ -71,24 +71,34 @@ export default {
                 })
         },
         deleteHandler(file) {
-            axios.delete('api/snapshots/' + file)
-                .then(response => {
-                    this.snapshots = response.data.data;
-                    alert("Der Zwischenstand wurde erfolgreich gelöscht");
-                })
-                .catch(error => {
-                    console.log(error);
-                })
+
+            let result = confirm('Möchtest du den Speicherstand wirklich löschen?');
+
+            if (result) {
+                axios.delete('api/snapshots/' + file)
+                    .then(response => {
+                        this.snapshots = response.data.data;
+                        alert("Der Zwischenstand wurde erfolgreich gelöscht");
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            }
         },
         deleteAllHandler() {
-            axios.delete('api/snapshots')
-                .then(response => {
-                    this.snapshots = response.data.data;
-                    alert("Alle Zwischenstände wurden gelöscht");
-                })
-                .catch(error => {
-                    console.log(error);
-                })
+
+            let result = confirm('Möchtest du  wirklich alle Speicherstände löschen?');
+
+            if (result) {
+                axios.delete('api/snapshots')
+                    .then(response => {
+                        this.snapshots = response.data.data;
+                        alert("Alle Zwischenstände wurden gelöscht");
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            }
         }
     }
 }
