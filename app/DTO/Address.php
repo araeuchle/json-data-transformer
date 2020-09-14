@@ -26,7 +26,7 @@ class Address
     /**
      * @var string
      */
-    private $country = '';
+    private $country = 'Deutschland';
 
     /**
      * @param $data
