@@ -12,6 +12,38 @@ class ExportService
      */
     private $exportPath;
 
+    /**
+     * @var string[]
+     */
+    private $headerColumns = [
+        'ID',
+        'post_title',
+        'post_author',
+        'post_content',
+        'post_category',
+        'post_tags',
+        'post_type',
+        'post_status',
+        'featured',
+        'video',
+        'street',
+        'city',
+        'region',
+        'country',
+        'zip',
+        'latitude',
+        'longitude',
+        'business_hours',
+        'phone',
+        'email',
+        'website',
+        'twitter',
+        'facebook'
+    ];
+
+    /**
+     * ExportService constructor.
+     */
     public function __construct()
     {
         $this->exportPath = storage_path('exports');
@@ -36,51 +68,68 @@ class ExportService
         return $this->$method($items);
     }
 
+    /**
+     * @param $items
+     * @return BinaryFileResponse
+     */
     private function csvExport($items)
     {
         $filename = $this->exportPath . DIRECTORY_SEPARATOR .  'data.csv';
 
         $fileHandle = fopen($filename, 'w');
-        $majorRow = [
-            'place_listing'
+
+        fputcsv($fileHandle, ['place_listing'], ';');
+        fputcsv($fileHandle, $this->headerColumns, ';');
+
+        $rows = $this->createDataRows($items);
+
+        if (count($rows) > 0) {
+            foreach ($rows as $row) {
+                fputcsv($fileHandle, $row, ';');
+            }
+        }
+
+        fclose($fileHandle);
+
+        $headers = [
+            'Content-Type' => 'text/csv'
         ];
 
-        fputcsv($fileHandle, $majorRow, ';');
+        return response()->download($filename, 'export.csv', $headers);
+    }
 
-        $headerColumns =  [
-            'ID',
-            'post_title',
-            'post_author',
-            'post_content',
-            'post_category',
-            'post_tags',
-            'post_type',
-            'post_status',
-            'featured',
-            'video',
-            'street',
-            'city',
-            'region',
-            'country',
-            'zip',
-            'latitude',
-            'longitude',
-            'business_hours',
-            'phone',
-            'email',
-            'website',
-            'twitter',
-            'facebook'
+    /**
+     * @param $items
+     * @return BinaryFileResponse
+     */
+    private function jsonExport($items)
+    {
+        $rows = $this->createDataRows($items, true);
+        $filename = $this->exportPath . DIRECTORY_SEPARATOR . 'export.json';
+
+        file_put_contents($filename, json_encode($rows, JSON_PRETTY_PRINT));
+
+        $headers = [
+            'Content-Type' => 'application/json'
         ];
 
-        fputcsv($fileHandle, $headerColumns, ';');
+        return response()->download($filename, 'export.json', $headers);
+    }
 
+    /**
+     * @param $items
+     * @param false $withHeader
+     * @return array
+     */
+    private function createDataRows($items, $withHeader = false)
+    {
+        $rows = [];
         foreach ($items as $item) {
 
             $address = new Address();
             $address->createFromData($item['Address']);
 
-            $column = [
+            $values = [
                 '',
                 $item['Title'] ?? '',
                 '1',
@@ -106,35 +155,13 @@ class ExportService
                 ''
             ];
 
-            fputcsv($fileHandle, $column, ';');
+            if ($withHeader) {
+                $rows[] = array_combine($this->headerColumns, $values);
+            } else {
+                $rows[] = $values;
+            }
         }
 
-        fclose($fileHandle);
-
-        $headers = [
-            'Content-Type' => 'text/csv'
-        ];
-
-        return response()->download($filename, 'export.csv', $headers);
-    }
-
-    private function jsonExport($items)
-    {
-        $items = json_encode($items, JSON_PRETTY_PRINT);
-        $filename = $this->createExportFile($items, 'json');
-        $headers = [
-            'Content-Type' => 'application/json'
-        ];
-
-        return response()->download($filename, 'export.json', $headers);
-    }
-
-    private function createExportFile($items, $format)
-    {
-        $filename = $this->exportPath . DIRECTORY_SEPARATOR . 'export.' . $format;
-
-        file_put_contents($filename, $items);
-
-        return $filename;
+        return $rows;
     }
 }
