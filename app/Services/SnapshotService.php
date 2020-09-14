@@ -11,6 +11,9 @@ class SnapshotService
      */
     private $storagePath;
 
+    /**
+     * SnapshotService constructor.
+     */
     public function __construct()
     {
         $this->storagePath = storage_path('savings');
@@ -97,11 +100,17 @@ class SnapshotService
         ]);
     }
 
+    /**
+     * @return array|false
+     */
     private function listFiles()
     {
         return array_slice(scandir($this->storagePath), 2);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteAll()
     {
         $files = $this->listFiles();
