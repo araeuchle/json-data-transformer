@@ -40,8 +40,8 @@ class ImportZipCommand extends Command
     {
         $path = base_path('data/zuordnung_plz_bundesland.csv');
 
-        if (($handle = fopen($path, "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+        if (($handle = fopen($path, "r")) !== false) {
+            while (($data = fgetcsv($handle, 1000, ";")) !== false) {
                 $zipMapping = new ZipMapping();
                 $zipMapping->zip = $data[0];
                 $zipMapping->state = $data[1];
