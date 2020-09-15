@@ -1,6 +1,8 @@
 <?php
 namespace App\DTO;
 
+use App\ZipMapping;
+
 class Address
 {
     /**
@@ -34,25 +36,34 @@ class Address
     public function createFromData($data)
     {
         $data = explode(',', $data);
-
-        if (isset($data[0])) {
-            $this->street = trim($data[0]);
-        }
+        $this->street = $data[0];
 
         if (isset($data[1])) {
-            $this->zip = trim($data[1]);
-        }
+            $cityData = trim($data[1]);
 
-        if (isset($data[2])) {
-            $this->city = trim($data[2]);
-        }
+            // Format: 61381 Friedrichsdorf
+            // Matches everything from 1st whitespace
+            preg_match('/(?<=\s).*/', $cityData, $cityMatches);
 
-        if (isset($data[3])) {
-            $this->region = trim($data[3]);
-        }
+            // matches everything until 1st whitespace
+            preg_match('/^\S*/', $cityData, $zipMatches);
 
-        if (isset($data[4])) {
-            $this->country = trim($data[4]);
+            if (count($cityMatches) === 1) {
+                $this->city = trim($cityMatches[0]);
+            }
+
+            if (count($zipMatches) === 1) {
+                $this->zip = trim($zipMatches[0]);
+
+                $zipMapping = ZipMapping::where('zip', '=', trim($this->zip))->first();
+
+                if ($zipMapping === null) {
+                    return;
+                }
+
+                $this->region = $zipMapping->state;
+                $this->zip = $zipMapping->zip;
+            }
         }
     }
 
