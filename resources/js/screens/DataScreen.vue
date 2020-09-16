@@ -28,11 +28,6 @@ export default {
         iframeUrl() {
             return this.$store.state.currentItem[this.$store.state.websiteField];
         }
-    },
-    methods: {
-        formatHandler(currentItem) {
-            console.log(currentItem, "foooo");
-        }
     }
 }
 </script>
