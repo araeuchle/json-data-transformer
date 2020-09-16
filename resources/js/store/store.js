@@ -52,6 +52,8 @@ export default new Vuex.Store({
             context.commit('setCurrentIndex', nextIndex);
 
             const nextItem = context.state.items[nextIndex];
+            nextItem['Open_Time'] = nextItem['Open_Time'].replace(/Öffnungszeiten an Feiertagen Die Öffnungszeiten können abweichen./g, '-').trim();
+
             context.commit('setCurrentItem', nextItem);
         },
         moveBack(context) {

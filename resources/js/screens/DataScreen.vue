@@ -5,7 +5,8 @@
                 <div class="row mt-3">
                     <div class="col-sm-6 mt-3" v-for="(value, propertyName) in currentItem">
                         <label>{{ propertyName }}</label>
-                        <input type="text"  class="form-control"   v-model="currentItem[propertyName]" />
+                        <input type="text"  class="form-control"   v-model="currentItem[propertyName]" v-if="propertyName !== 'Open_Time'" />
+                        <textarea name="" id="" cols="30" rows="10" v-model="currentItem[propertyName]" style="white-space: pre-line;"  class="form-control" v-if="propertyName === 'Open_Time'"></textarea>
                     </div>
                 </div>
             </div>
@@ -26,6 +27,11 @@ export default {
         },
         iframeUrl() {
             return this.$store.state.currentItem[this.$store.state.websiteField];
+        }
+    },
+    methods: {
+        formatHandler(currentItem) {
+            console.log(currentItem, "foooo");
         }
     }
 }
