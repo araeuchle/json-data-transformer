@@ -42,10 +42,18 @@ class ExportService
     ];
 
     /**
-     * ExportService constructor.
+     * @var OpeningTimeTransformer
      */
-    public function __construct()
+    private $openingTimeTransformer;
+
+    /**
+     * ExportService constructor.
+     * @param OpeningTimeTransformer $openingTimeTransformer
+     */
+    public function __construct(OpeningTimeTransformer  $openingTimeTransformer)
     {
+        $this->openingTimeTransformer = $openingTimeTransformer;
+
         $this->exportPath = storage_path('exports');
 
         if (!is_dir($this->exportPath)) {
@@ -129,6 +137,8 @@ class ExportService
             $address = new Address();
             $address->createFromData($item['Address']);
 
+           ;
+
             $values = [
                 '',
                 $item['Title'] ?? '',
@@ -147,7 +157,7 @@ class ExportService
                 $address->getZip() ?? '',
                 $item['latitude'] ?? '',
                 $item['longitude'] ?? '',
-                $item['Open_Time'] ?? '',
+                $this->openingTimeTransformer->parseTimeString($item['Open_Time']) . ',["UTC":"+0"]' ?? '',
                 $item['Phone'] ?? '',
                 '',
                 $item['Website'] ?? '',

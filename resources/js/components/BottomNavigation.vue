@@ -41,6 +41,9 @@
                             <button class="btn btn-outline-secondary" style="margin-right: 20px;" title="Ansichtsmodus: Konfiguration" @click="changeViewModeHandler('config')" >
                                 <Zondicon icon="cog" style="height: 24px;" />
                             </button>
+                        <button class="btn btn-outline-secondary" style="margin-right: 20px;" title="Ansichtsmodus: Export" @click="changeViewModeHandler('export')" >
+                            <Zondicon icon="file" style="height: 24px;" />
+                        </button>
                     </div>
                 </div>
             </div>
